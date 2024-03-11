@@ -1,4 +1,6 @@
-# movie_recommendation_system
+# This ReadMe contains code that i executed on jupyter notebook as well as code that i executed on pycharm to provide this system a GUI. Also i have included link to google drive where all files can be found
+
+## movie_recommendation_system - Jupyter Notebook Code
 
 import numpy as np
 import pandas as pd
