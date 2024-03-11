@@ -111,9 +111,9 @@ from sklearn.metrics.pairwise import cosine_similarity
 ### similarity matrix calculating distance of each movie with each other movie from 0 to 1
 similarity = cosine_similarity(vectors)
 similarity[14]
-### list(enumerate(similarity[0])): to create index and similarity value tuple
-### reverse=True: to print in descending order
-###  key=lambda x:x[1]: to specify that we want to order on the base of second item of each tuple (not on index value)
+#### list(enumerate(similarity[0])): to create index and similarity value tuple
+#### reverse=True: to print in descending order
+####  key=lambda x:x[1]: to specify that we want to order on the base of second item of each tuple (not on index value)
 sorted(list(enumerate(similarity[0])), reverse=True, key=lambda x:x[1])[1:6]
 def recommend(movie):
     movie_index = new_df[new_df['title'] == movie].index[0]        # fetch the index of entered movie
