@@ -12,21 +12,18 @@ import ast <br>
 movies = pd.read_csv('tmdb_5000_movies.csv')
 credits = pd.read_csv('tmdb_5000_credits.csv')
 
-## Exploratory Data Analysis
-### Display the shape of the 'movies' and 'credits' DataFrame
+# 2. Exploratory Data Analysis
+###     1. Data Overview
 movies.shape
 credits.shape
-
 print(type(movies))
 print(type(credits))
 movies['title'] = movies['title'].str.strip()
 credits['title'] = credits['title'].str.strip()
-### Assuming 'title' is a common column in both DataFrames
-
+###     2. Joining DataFrames
 movies = movies.merge(credits, on='title', suffixes=('', ''))
-### Display the first few rows of the merged DataFrame
 movies.head(1)
-### selection of relevant columns on which tags will be created and recommendation will be made
+###     3. Selection of relevant columns
 movies = movies[['movie_id', 'title','overview','genres','keywords', 'cast','crew']]
 ### checking for null values
 movies.isnull().sum()
