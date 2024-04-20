@@ -4,7 +4,7 @@ https://drive.google.com/file/d/1Po0rdwQFdO-gBxFo3d_MXcI-Hnb-x8US/view?usp=shari
 ## movie_recommendation_system - Jupyter Notebook Code
 
 # Setup and data loading
-import numpy as np
+import numpy as np <br>
 import pandas as pd
 import ast
 
