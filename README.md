@@ -3,16 +3,18 @@ https://drive.google.com/file/d/1Po0rdwQFdO-gBxFo3d_MXcI-Hnb-x8US/view?usp=shari
 
 ## movie_recommendation_system - Jupyter Notebook Code
 
+# Setup and data loading
 import numpy as np
 import pandas as pd
 import ast
 import pandas as pd
 
-### Assuming 'tmdb_5000_movies.csv' and 'tmdb_5000_credits.csv' are in the same directory
+### Reading Files "tmdb_5000_movies.csv" and "tmdb_5000_credits.csv"
 movies = pd.read_csv('tmdb_5000_movies.csv')
 credits = pd.read_csv('tmdb_5000_credits.csv')
 
-### Display the shape of the 'movies' and credits DataFrame
+## Exploratory Data Analysis
+### Display the shape of the 'movies' and 'credits' DataFrame
 movies.shape
 credits.shape
 
