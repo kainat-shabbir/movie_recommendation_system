@@ -7,7 +7,6 @@ https://drive.google.com/file/d/1Po0rdwQFdO-gBxFo3d_MXcI-Hnb-x8US/view?usp=shari
 import numpy as np
 import pandas as pd
 import ast
-import pandas as pd
 
 ### Reading Files "tmdb_5000_movies.csv" and "tmdb_5000_credits.csv"
 movies = pd.read_csv('tmdb_5000_movies.csv')
