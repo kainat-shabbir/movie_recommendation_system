@@ -8,7 +8,7 @@ https://drive.google.com/file/d/1Po0rdwQFdO-gBxFo3d_MXcI-Hnb-x8US/view?usp=shari
 import numpy as np <br>
 import pandas as pd<br>
 import ast <br>
-### 1. Read Files
+### 2. Read Files
 movies = pd.read_csv('tmdb_5000_movies.csv') <br>
 credits = pd.read_csv('tmdb_5000_credits.csv') <br>
 
@@ -73,63 +73,63 @@ movies.head() <br>
 
 ### 4. Text Preprocessing
 #### i. Splitting Overview Column
-movies['overview']= movies['overview'].apply(lambda x:x.split())
-### remove spaces from genre, cast, keywords and crew column
-movies['genres']= movies['genres'].apply(lambda x:[i.replace(" ","") for i in x])
-movies['cast']= movies['cast'].apply(lambda x:[i.replace(" ","") for i in x])
-movies['crew']= movies['crew'].apply(lambda x:[i.replace(" ","") for i in x])
-movies['keywords']= movies['keywords'].apply(lambda x:[i.replace(" ","") for i in x])
-movies.head()
-### creating tags column by combining all 5 columns
-movies['tags'] = movies['overview'] + movies['genres'] + movies['cast'] + movies['crew'] + movies['keywords']
-movies.head()
-### creating new dataFrame 
-new_df = movies[['movie_id', 'title', 'tags']]
-###  convert tags list into string
-new_df['tags'] = new_df['tags'].apply(lambda x:" ".join(x))
-new_df.head()
-new_df['tags'][0]
-### convert all letters into lower case
-new_df['tags']= new_df['tags'].apply(lambda x:x.lower())
-### import sklearn class CountVectorizer to do text vectorization of tags column (5000 most common words)
-from sklearn.feature_extraction.text import CountVectorizer
-cv = CountVectorizer (max_features = 5000, stop_words = 'english')
-### converting scipy parse matrix into numpy array
-vectors = cv.fit_transform(new_df['tags']).toarray()
-vectors[0]
-### importing nltk PorterStemmer Class which will provide the functionality to solve issues of similar words e.g, actor, actors
-import nltk
-from nltk.stem.porter import PorterStemmer
-ps = PorterStemmer()
-### function will take words and will extract their stem words, e.g. from dancing it will extract danc
-def stem(text):
-    y=[]
-    for i in text.split():
-        y.append(ps.stem(i))
-    return " ".join(y)
-new_df['tags']= new_df['tags'].apply(stem)
-new_df['tags'][0]
-cv.get_feature_names_out()
-### for calculating cosine theta between vectors to see to what extinct two movies are similar, we are importing cosine similarity
-from sklearn.metrics.pairwise import cosine_similarity
-### similarity matrix calculating distance of each movie with each other movie from 0 to 1
-similarity = cosine_similarity(vectors)
-similarity[14]
-#### list(enumerate(similarity[0])): to create index and similarity value tuple
-#### reverse=True: to print in descending order
-####  key=lambda x:x[1]: to specify that we want to order on the base of second item of each tuple (not on index value)
-sorted(list(enumerate(similarity[0])), reverse=True, key=lambda x:x[1])[1:6]
-def recommend(movie):
-    movie_index = new_df[new_df['title'] == movie].index[0]        # fetch the index of entered movie
-    distances = similarity[movie_index]                 # fetch the distances of found index
-    movies_list = sorted(list(enumerate(distances)), reverse=True, key=lambda x:x[1])[1:6]
+movies['overview']= movies['overview'].apply(lambda x:x.split()) <br>
+#### ii. Removing Spaces
+movies['genres']= movies['genres'].apply(lambda x:[i.replace(" ","") for i in x]) <br>
+movies['cast']= movies['cast'].apply(lambda x:[i.replace(" ","") for i in x]) <br>
+movies['crew']= movies['crew'].apply(lambda x:[i.replace(" ","") for i in x]) <br>
+movies['keywords']= movies['keywords'].apply(lambda x:[i.replace(" ","") for i in x]) <br>
+movies.head() <br>
+#### iii. Creating tags column
+movies['tags'] = movies['overview'] + movies['genres'] + movies['cast'] + movies['crew'] + movies['keywords'] <br>
+movies.head() <br>
+# 5. Text Vectorization
 
-    for i in movies_list:
-        print(new_df.iloc[i[0]].title)       # fetching the titles of the movie_list
-recommend('Titanic')
-import pickle
-pickle.dump(new_df.to_dict(), open('movie_dict_pkl', 'wb'))
-pickle.dump(similarity,open('similarity.pkl','wb'))
+### 1. Creating tag based dataframe 
+new_df = movies[['movie_id', 'title', 'tags']] <br>
+### 2. Convert tags list into string
+new_df['tags'] = new_df['tags'].apply(lambda x:" ".join(x)) <br>
+new_df.head() <br>
+new_df['tags'][0] <br>
+### 3. Convert all letters into lower case
+new_df['tags']= new_df['tags'].apply(lambda x:x.lower()) <br>
+### 4. Import sklearn class and vectorizing text features
+from sklearn.feature_extraction.text import CountVectorizer <br>
+cv = CountVectorizer (max_features = 5000, stop_words = 'english') <br>
+vectors = cv.fit_transform(new_df['tags']).toarray() <br>
+vectors[0] <br>
+### 5. Importing nltk porterStemmer class and stemming words
+import nltk <br>
+from nltk.stem.porter import PorterStemmer <br>
+ps = PorterStemmer() <br>
+def stem(text): <br>
+    y=[] <br>
+    for i in text.split(): <br>
+        y.append(ps.stem(i)) <br>
+    return " ".join(y) <br>
+new_df['tags']= new_df['tags'].apply(stem) <br>
+new_df['tags'][0] <br>
+cv.get_feature_names_out() <br>
+# 6. Similarity Calculation
+### 1. Cosine Similarity
+from sklearn.metrics.pairwise import cosine_similarity <br>
+similarity = cosine_similarity(vectors) <br>
+similarity[14] <br>
+sorted(list(enumerate(similarity[0])), reverse=True, key=lambda x:x[1])[1:6] <br>
+# 7. Recommendation Function
+def recommend(movie): <br>
+    movie_index = new_df[new_df['title'] == movie].index[0]        # fetch the index of entered movie <br>
+    distances = similarity[movie_index]                 # fetch the distances of found index <br>
+    movies_list = sorted(list(enumerate(distances)), reverse=True, key=lambda x:x[1])[1:6] <br>
+
+    for i in movies_list: <br>
+        print(new_df.iloc[i[0]].title)       # fetching the titles of the movie_list <br>
+recommend('Titanic')<br>
+# 8. Model Saving
+### Using Pickle
+import pickle<br>
+pickle.dump(new_df.to_dict(), open('movie_dict_pkl', 'wb')) <br>
+pickle.dump(similarity,open('similarity.pkl','wb')) <br>
 
 # Code for Website Creation
 
