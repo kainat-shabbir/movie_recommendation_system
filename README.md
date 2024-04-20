@@ -1,7 +1,7 @@
-# This ReadMe contains code that i executed on jupyter notebook as well as code that i executed on pycharm to provide this system a GUI. Also i have included link to google drive where all files can be found here:
+# files can be found:
 https://drive.google.com/file/d/1Po0rdwQFdO-gBxFo3d_MXcI-Hnb-x8US/view?usp=sharing
 
-## movie_recommendation_system - Jupyter Notebook Code
+# movie_recommendation_system - Jupyter Notebook Code
 
 # 1. Setup and data loading
 ### 1. Import Libraries
@@ -40,7 +40,7 @@ movies.duplicated().sum() <br>
 def convert(obj): <br>
     L= [] <br>
     for i in ast.literal_eval(obj): <br>
-        L.append(i['name']) <br>
+        L.append(i['name']) <br> 
     return L <br>
 movies['genres'] = movies['genres'].apply(convert) <br>
 movies['keywords'] = movies['keywords'].apply(convert) <br>
@@ -131,7 +131,7 @@ import pickle<br>
 pickle.dump(new_df.to_dict(), open('movie_dict_pkl', 'wb')) <br>
 pickle.dump(similarity,open('similarity.pkl','wb')) <br>
 
-# 9. Streamlit website code
+# Streamlit website code
 ### 1. Loading imports
 import streamlit as st <br>
 import pickle <br>
