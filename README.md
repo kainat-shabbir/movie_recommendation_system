@@ -3,12 +3,12 @@ https://drive.google.com/file/d/1Po0rdwQFdO-gBxFo3d_MXcI-Hnb-x8US/view?usp=shari
 
 ## movie_recommendation_system - Jupyter Notebook Code
 
-# Setup and data loading
+# 1. Setup and data loading
+### 1. Import Libraries
 import numpy as np <br>
-import pandas as pd
-import ast
-
-### Reading Files "tmdb_5000_movies.csv" and "tmdb_5000_credits.csv"
+import pandas as pd<br>
+import ast <br>
+### 1. Read Files
 movies = pd.read_csv('tmdb_5000_movies.csv')
 credits = pd.read_csv('tmdb_5000_credits.csv')
 
