@@ -9,65 +9,70 @@ import numpy as np <br>
 import pandas as pd<br>
 import ast <br>
 ### 1. Read Files
-movies = pd.read_csv('tmdb_5000_movies.csv')
-credits = pd.read_csv('tmdb_5000_credits.csv')
+movies = pd.read_csv('tmdb_5000_movies.csv') <br>
+credits = pd.read_csv('tmdb_5000_credits.csv') <br>
 
 # 2. Exploratory Data Analysis
-###     1. Data Overview
-movies.shape
-credits.shape
-print(type(movies))
-print(type(credits))
-movies['title'] = movies['title'].str.strip()
-credits['title'] = credits['title'].str.strip()
-###     2. Joining DataFrames
-movies = movies.merge(credits, on='title', suffixes=('', ''))
-movies.head(1)
-###     3. Selection of relevant columns
-movies = movies[['movie_id', 'title','overview','genres','keywords', 'cast','crew']]
-### checking for null values
-movies.isnull().sum()
-### dropping null values 
-movies.dropna(inplace=True)
-movies.isnull().sum()
-movies.duplicated().sum()
-(movies.iloc[0].genres)
-(movies.iloc[0].keywords)
-### creating a function which will convert string of list into list and then extracting genre name from each dictionary
-def convert(obj):
-    L= []
-    for i in ast.literal_eval(obj):
-        L.append(i['name'])
-    return L
-movies['genres'] = movies['genres'].apply(convert)
-movies['keywords'] = movies['keywords'].apply(convert)
-movies.head()
-### creating a function which will convert string of list into list and then extracting first 3 cast member names
-def convertCast(obj):
-    L= []
-    counter = 0
-    for i in ast.literal_eval(obj):
-        if counter !=3:
-            L.append(i['name'])
-            counter+=1
-        else:
-            break
-    return L
-movies['cast'] = movies['cast'].apply(convertCast)
-movies.head()
-movies['crew'][0]
+### 1. Data Overview
+movies.shape <br>
+credits.shape <br>
+print(type(movies)) <br>
+print(type(credits)) <br>
+movies['title'] = movies['title'].str.strip() <br>
+credits['title'] = credits['title'].str.strip() <br>
+### 2. Joining DataFrames
+movies = movies.merge(credits, on='title', suffixes=('', '')) <br>
+movies.head(1) <br>
+### 3. Selection of relevant columns
+movies = movies[['movie_id', 'title','overview','genres','keywords', 'cast','crew']] <br>
+# 3. Data Cleaning and Preprocessing
+### 1. Handling missing values
+movies.isnull().sum() <br>
+movies.dropna(inplace=True) <br>
+movies.isnull().sum() <br>
+### 2. Removing Duplicates
+movies.duplicated().sum() <br>
 
-### creating a function which will convert string of list into list and then extracting director name from each dictionary
-def fetch_director(obj):
-    L= []
-    for i in ast.literal_eval(obj):
-        if i['job'] == 'Director':
-            L.append(i['name'])
-            break
-    return L
-movies['crew']= movies['crew'].apply(fetch_director)
-movies.head()
-### to split the string in overview column into words
+(movies.iloc[0].genres) <br>
+(movies.iloc[0].keywords) <br>
+# 4. Feature Engineering
+### 1. Extracting genre and keywords using convert function
+def convert(obj): <br>
+    L= [] <br>
+    for i in ast.literal_eval(obj): <br>
+        L.append(i['name']) <br>
+    return L <br>
+movies['genres'] = movies['genres'].apply(convert) <br>
+movies['keywords'] = movies['keywords'].apply(convert) <br>
+movies.head() <br>
+### 2. Extracting cast using convertCast function
+def convertCast(obj): <br>
+    L= [] <br>
+    counter = 0 <br>
+    for i in ast.literal_eval(obj): <br>
+        if counter !=3: <br>
+            L.append(i['name']) <br>
+            counter+=1 <br>
+        else: <br>
+            break <br>
+    return L <br>
+movies['cast'] = movies['cast'].apply(convertCast) <br>
+movies.head() <br>
+movies['crew'][0] <br>
+
+### 3. Extracting director using fetch_director function
+def fetch_director(obj): <br>
+    L= [] <br>
+    for i in ast.literal_eval(obj): <br>
+        if i['job'] == 'Director': <br>
+            L.append(i['name']) <br>
+            break <br>
+    return L <br>
+movies['crew']= movies['crew'].apply(fetch_director) <br>
+movies.head() <br>
+
+### 4. Text Preprocessing
+#### i. Splitting Overview Column
 movies['overview']= movies['overview'].apply(lambda x:x.split())
 ### remove spaces from genre, cast, keywords and crew column
 movies['genres']= movies['genres'].apply(lambda x:[i.replace(" ","") for i in x])
