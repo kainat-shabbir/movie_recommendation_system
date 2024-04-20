@@ -131,19 +131,20 @@ import pickle<br>
 pickle.dump(new_df.to_dict(), open('movie_dict_pkl', 'wb')) <br>
 pickle.dump(similarity,open('similarity.pkl','wb')) <br>
 
-# Code for Website Creation
+# 9. Streamlit website code
+### 1. Loading imports
+import streamlit as st <br>
+import pickle <br>
+import pandas as pd <br>
+import requests <br>
 
-
-import streamlit as st
-import pickle
-import pandas as pd
-import requests
-
+### 2. Poster fetching function
 def fetch_poster(movie_id):
     response = requests.get('https://api.themoviedb.org/3/movie/{}?api_key=089eee4360cb595f2f54f08a0471856d'.format(movie_id))
     data = response.json()
     return "http://image.tmdb.org/t/p/w500/" + data['poster_path']
 
+### 3. Recommendation logic using pickle data
 def recommend(movie):
     movie_index = movies[movies['title'] == movie].index[0]  # fetch the index of entered movie
     distances = similarity[movie_index]  # fetch the distances of found index
@@ -156,15 +157,15 @@ def recommend(movie):
         recommended_movies.append(movies.iloc[i[0]].title)  # fetching the titles of the movie_list
         recommended_posters.append(fetch_poster(movie_id))
     return recommended_movies, recommended_posters
-# Load pickled movie dictionary
 with open('movie_dict_pkl', 'rb') as file:
     movies_dict = pickle.load(file)
 with open('similarity.pkl', 'rb') as file:
     similarity = pickle.load(file)
 movies = pd.DataFrame(movies_dict)
 print(type(movies))
-st.title("Movie Recommendation System")
 
+### 4. Streamlt UI setup
+st.title("Movie Recommendation System")
 selected_movie_name = st.selectbox('How would you like to be collected?', movies['title'].values)
 
 if st.button('Recommend'):
